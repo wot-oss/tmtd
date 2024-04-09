@@ -1,0 +1,14 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "Basic On/Off Thing Model",
+    "@type": "tm:ThingModel",
+    "properties": {
+      "onOff": {
+        "title": "onOff",
+        "observable": false,
+        "readOnly": false,
+        "type": "boolean",
+        "forms": []
+      }
+    }
+  }

@@ -1,0 +1,12 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "Min/Max for Dimable Light",
+    "@type": "tm:ThingModel",
+    "properties": {
+        "dim": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+        }
+    }
+}

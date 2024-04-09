@@ -1,0 +1,50 @@
+{
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "title": "Dimable Light",
+    "@type": "tm:ThingModel",
+    "tm:required" : [
+        "#/properties/dimming"
+    ],
+    "securityDefinitions": {
+        "nosec_sc": {
+            "scheme": "nosec"
+        }
+    },
+    "security": "nosec_sc",
+    "properties": {
+        "dim": {
+            "title": "dim",
+            "observable": false,
+            "readOnly": false,
+            "type": "integer",
+            "forms": []
+        },
+        "dimming" : {
+            "tm:ref": "dimming.jsonld#properties/dim",
+            "maximum": 95,
+            "unit":"%"
+        }
+    },
+    "actions": {},
+    "events": {},
+    "links": [
+        {
+            "href": "some.file",
+            "rel": "docu",
+            "type": "application/td+json"
+        },
+        {
+            "href": "onoff.jsonld",
+            "rel": "tm:extends",
+            "type": "application/td+json"
+        },
+        {
+            "href": "some.file",
+            "rel": "docu",
+            "type": "application/td+json",
+            "addr": "{{ address }}",
+            "nr":"{{ anumber  }}",
+            "more":"text {{anumber}}_{{address}}"
+        }
+    ]
+}
