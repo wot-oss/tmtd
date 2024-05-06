@@ -117,7 +117,8 @@ func (p *Processor) copyMapSection(section string, to *Processor) {
 		destMap := to.data.(map[string]any)
 		destSect, okDestSect := destMap[section]
 		if !okDestSect {
-			destSect = make(map[string]any)
+			destMap[section] = make(map[string]any)
+			destSect = destMap[section]
 		}
 		destSectMap := destSect.(map[string]any)
 		srcSectMap := srcSect.(map[string]any)
@@ -154,7 +155,6 @@ func (p *Processor) Save() {
 	switch p.outputDir {
 	case "-":
 		fmt.Println(prt.String())
-		//check(err)
 	case "":
 	default:
 		err := os.MkdirAll(p.outputDir, 0777)
@@ -218,8 +218,8 @@ func merge(dest any, src any, deep int) {
 				d[key] = element
 			}
 		}
-	case ([]any):
-		// merge of array not yet supportet
+	case []any:
+		// merge of array not yet supported
 		//	default:
 		//		log.Printf("literal %T %v\n", d, d)
 	}
@@ -248,7 +248,7 @@ func (p *Processor) iterate(data any, po *PathObject) {
 				delete(d, k)
 			}
 		}
-	case ([]any):
+	case []any:
 		for i, ele := range d {
 			po.AddArray(i)
 			p.iterate(ele, po)
@@ -297,7 +297,6 @@ func (p *Processor) processLinks(po *PathObject, key string, element any) []any 
 }
 
 func (p *Processor) processReference(po *PathObject, key string, element any, d map[string]any) {
-	//fmt.Println("deep1 and properties")
 	ref := strings.Split(element.(string), "#")
 	refData, rerr := p.loadFile(ref[0])
 	if rerr != nil {
@@ -308,7 +307,6 @@ func (p *Processor) processReference(po *PathObject, key string, element any, d 
 		if errp != nil {
 			log.Printf("path %s not found in file %s : %v\n", jpExpr, ref[0], errp)
 		} else {
-			//log.Printf("found %v", refDataPart)
 			merge(d, refDataPart, po.Deep())
 		}
 	}
