@@ -23,17 +23,17 @@ import (
 )
 
 type Processor struct {
-	extensions   []Extension
+	extensions []Extension
+	// track if further action is required
 	foundTMStaff bool
 	VarMap       map[string]any
-	//	doubleCurliePattern *regexp.Regexp
-	outputDir string
-	inputPath []string
-	parent    *Processor
-	items     []*Processor
-	data      any
-	filename  string
-	instance  PathObject
+	outputDir    string
+	inputPath    []string
+	parent       *Processor
+	items        []*Processor
+	data         any
+	filename     string
+	instance     PathObject
 }
 
 func NewProcessor(out string, in string, vars string) *Processor {
