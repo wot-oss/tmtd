@@ -105,6 +105,7 @@ func (p *Processor) copy(to *Processor) {
 	p.copyMapSection("properties", to)
 	p.copyMapSection("actions", to)
 	p.copyMapSection("events", to)
+	p.copyPlainSlices("security", to)
 	p.copyMapSection("securityDefinitions", to)
 	p.copyArraySection("links", to)
 }
@@ -132,6 +133,22 @@ func (p *Processor) copyMapSection(section string, to *Processor) {
 	}
 }
 
+func (p *Processor) copyPlainSlices(section string, to *Processor) {
+	srcMap := p.data.(map[string]any)
+	srcSect, okSrcSect := srcMap[section]
+	if okSrcSect {
+		destMap := to.data.(map[string]any)
+		destSect, okDestSect := destMap[section]
+		if !okDestSect {
+			destSect = []any{}
+		}
+		destSectArray := destSect.([]any)
+		srcSectArray := plainOrSliceAsSlice(srcSect)
+		destSectArray = append(destSectArray, srcSectArray...)
+		destMap[section] = destSectArray
+	}
+}
+
 func (p *Processor) copyArraySection(section string, to *Processor) {
 	srcMap := p.data.(map[string]any)
 	srcSect, okSrcSect := srcMap[section]
@@ -143,9 +160,24 @@ func (p *Processor) copyArraySection(section string, to *Processor) {
 		}
 		destSectArray := destSect.([]any)
 		srcSectArray := srcSect.([]any)
-		destSectArray = append(destSectArray, srcSectArray)
+		destSectArray = append(destSectArray, srcSectArray...)
 		destMap[section] = destSectArray
 	}
+}
+
+func plainOrSliceAsSlice(in any) []any {
+	if plain, ok := in.(string); ok {
+		return []any{plain}
+	}
+	// First, check if it is already string slice
+	if out, ok := in.([]any); ok {
+		return out
+	}
+	out := make([]any, len(in.([]any)))
+	for i, v := range in.([]any) {
+		out[i] = v.(string)
+	}
+	return out
 }
 
 func (p *Processor) Save() {

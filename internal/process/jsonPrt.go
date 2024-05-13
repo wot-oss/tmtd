@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"log/slog"
+	"reflect"
 	"slices"
 	"strings"
 )
@@ -112,8 +113,10 @@ func printRest(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 	//	slog.Debug(fmt.Sprintf("print %T %v\n", data, data), "path", po.String(), "deep", po.Deep())
 	//indent := true
 	var needSep bool
-	switch d := data.(type) {
-	case map[string]any:
+	v := reflect.ValueOf(data)
+	switch v.Kind() {
+	case reflect.Map:
+		d := v.Interface().(map[string]any)
 		jsPrt.AddText("{")
 		if len(d) > 0 {
 			jsPrt.addNl(po.Deep() + 1)
@@ -137,7 +140,8 @@ func printRest(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 			jsPrt.addNl(po.Deep())
 		}
 		jsPrt.AddText("}")
-	case ([]any):
+	case reflect.Array, reflect.Slice:
+		d := v.Interface().([]interface{})
 		jsPrt.AddText("[")
 		needSep = false
 		for i, ele := range d {
@@ -150,7 +154,8 @@ func printRest(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 			jsPrt.addNl(po.Deep())
 		}
 		jsPrt.AddText("]")
-	case string:
+	case reflect.String:
+		d := v.Interface().(string)
 		varName := strings.Trim(d, " \t")
 		if strings.HasPrefix(varName, "{{") && strings.HasSuffix(varName, "}}") {
 			res := doubleCurlyPattern.FindStringSubmatch(d)
@@ -163,28 +168,27 @@ func printRest(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 				}
 			}
 		}
+		ok := true
 		res := doubleCurlyPattern.ReplaceAllStringFunc(d, func(m string) string {
 			varName := strings.Replace(m, "{{", "", 1)
 			varName = strings.Replace(varName, "}}", "", 1)
 			varName = strings.Trim(varName, " \t")
-			found, ok := vars[varName]
+			var found any
+			found, ok = vars[varName]
 			if ok {
 				return fmt.Sprintf("%v", found)
 			}
 			return m
 		})
-		ok := true
 		if ok {
 			jsPrt.AddInterface(res, ok)
 		} else {
 			jsPrt.AddText(d)
 		}
-
-	case bool:
-		jsPrt.Add(d)
-	case json.Number, float32, float64, int, int16, int32, int64, int8, uint:
-
-		jsPrt.AddInterface(d, false)
+	case reflect.Bool:
+		jsPrt.Add(v.Interface())
+	case reflect.Int, reflect.Int8, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint32, reflect.Uint64, reflect.Float32, reflect.Float64:
+		jsPrt.AddInterface(v.Interface(), false)
 	default:
 		log.Printf("literal %T %v\n", d, d)
 	}
