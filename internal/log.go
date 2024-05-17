@@ -22,8 +22,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/innomotics/tmtd/internal/config"
 	"github.com/spf13/viper"
-	"github.com/wot-oss/tmtd/internal/config"
 )
 
 type DefaultLogHandler struct {

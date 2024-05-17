@@ -1,6 +1,6 @@
 # tmtd
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/wot-oss/tmtd)](https://goreportcard.com/report/github.com/wot-oss/tmtd) [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/wot-oss/tmtd)](https://github.com/wot-oss/tmtd/releases) [![PkgGoDev](https://img.shields.io/badge/go.dev-docs-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/wot-oss/tmtd)
+[![Go Report Card](https://goreportcard.com/badge/github.com/innomotics/tmtd)](https://goreportcard.com/report/github.com/innomotics/tmtd) [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/wot-oss/tmtd)](https://github.com/innomotics/tmtd/releases) [![PkgGoDev](https://img.shields.io/badge/go.dev-docs-007d9c?logo=go&logoColor=white)](https://pkg.go.dev/github.com/innomotics/tmtd)
 
 Transpiling thing-model to thing-descriptions
 

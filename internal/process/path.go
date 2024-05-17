@@ -68,6 +68,14 @@ func (p *PathObject) IsPath(path string) bool {
 	return true
 }
 
+func (p *PathObject) Prefix() string {
+	if len(p.path) > 1 && p.path[0] == "properties" {
+		parts := strings.Split(p.path[1], ".")
+		return strings.Join(parts[:len(parts)-1], ".")
+	}
+	return ""
+}
+
 func (p *PathObject) String() string {
 	var b strings.Builder
 	sep := ""

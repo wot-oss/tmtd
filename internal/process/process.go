@@ -102,16 +102,16 @@ func (p *Processor) Process(filename string) error {
 }
 
 func (p *Processor) copy(to *Processor) {
-	p.copyMapSection("properties", to)
-	p.copyMapSection("actions", to)
-	p.copyMapSection("events", to)
+	p.copyMapSection("properties", to, true)
+	p.copyMapSection("actions", to, true)
+	p.copyMapSection("events", to, true)
 	p.copyPlainSlices("security", to)
-	p.copyMapSection("securityDefinitions", to)
+	p.copyMapSection("securityDefinitions", to, false)
 	p.copyArraySection("links", to)
 }
 
 // copyMapSection
-func (p *Processor) copyMapSection(section string, to *Processor) {
+func (p *Processor) copyMapSection(section string, to *Processor, usePrefix bool) {
 	srcMap := p.data.(map[string]any)
 	srcSect, okSrcSect := srcMap[section]
 	if okSrcSect {
@@ -123,9 +123,12 @@ func (p *Processor) copyMapSection(section string, to *Processor) {
 		}
 		destSectMap := destSect.(map[string]any)
 		srcSectMap := srcSect.(map[string]any)
-		prefix := p.instance.String()
-		if len(prefix) > 0 {
-			prefix = prefix + "_"
+		prefix := ""
+		if usePrefix {
+			prefix = p.instance.String()
+			if len(prefix) > 0 {
+				prefix = prefix + "."
+			}
 		}
 		for k, v := range srcSectMap {
 			destSectMap[prefix+k] = v

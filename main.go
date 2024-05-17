@@ -16,9 +16,9 @@ limitations under the License.
 package main
 
 import (
-	"github.com/wot-oss/tmtd/cmd"
-	"github.com/wot-oss/tmtd/internal"
-	"github.com/wot-oss/tmtd/internal/config"
+	"github.com/innomotics/tmtd/cmd"
+	"github.com/innomotics/tmtd/internal"
+	"github.com/innomotics/tmtd/internal/config"
 )
 
 func init() {

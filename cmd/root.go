@@ -19,10 +19,10 @@ import (
 	"log/slog"
 	"slices"
 
+	"github.com/innomotics/tmtd/internal"
+	"github.com/innomotics/tmtd/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/wot-oss/tmtd/internal"
-	"github.com/wot-oss/tmtd/internal/config"
 )
 
 var cfgFile string

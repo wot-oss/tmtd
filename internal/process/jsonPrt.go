@@ -112,6 +112,7 @@ func printAll(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 func printRest(data any, po *PathObject, jsPrt *Printer, vars map[string]any) {
 	//	slog.Debug(fmt.Sprintf("print %T %v\n", data, data), "path", po.String(), "deep", po.Deep())
 	//indent := true
+	vars["prefix"] = po.Prefix()
 	var needSep bool
 	v := reflect.ValueOf(data)
 	switch v.Kind() {

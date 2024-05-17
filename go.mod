@@ -1,4 +1,4 @@
-module github.com/wot-oss/tmtd
+module github.com/innomotics/tmtd
 
 go 1.21
 

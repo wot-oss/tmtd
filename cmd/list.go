@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
+	"github.com/innomotics/tmtd/internal/process"
 	"github.com/spf13/cobra"
-	"github.com/wot-oss/tmtd/internal/process"
 )
 
 // listCmd represents the list command

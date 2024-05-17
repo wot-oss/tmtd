@@ -18,9 +18,9 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/innomotics/tmtd/internal/process"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/wot-oss/tmtd/internal/process"
 )
 
 // buildCmd represents the build command
