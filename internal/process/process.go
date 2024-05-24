@@ -95,6 +95,7 @@ func (p *Processor) Process(filename string) error {
 		thingMap := p.data.(map[string]any)
 		thingMap["@type"] = "Thing"
 	}
+	p.checkVersionInstance()
 	if d {
 		slog.Debug("End  Process", "filename", filename, "instance", p.instance.String())
 	}
@@ -183,6 +184,8 @@ func plainOrSliceAsSlice(in any) []any {
 	return out
 }
 
+// Save the serialized TD of the already processed TM to
+// the defined output
 func (p *Processor) Save() {
 	// print the result to Outputfile
 	prt := NewPrinter()
@@ -344,6 +347,25 @@ func (p *Processor) processReference(po *PathObject, key string, element any, d 
 		} else {
 			merge(d, refDataPart, po.Deep())
 		}
+	}
+}
+
+func (p *Processor) checkVersionInstance() {
+	rootMap := p.data.(map[string]any)
+	version, ok := rootMap["version"]
+	if ok {
+		instVersion := "0.0.0"
+		if varsVersion, inVars := p.VarMap["versionInstance"]; inVars {
+			instVersion = varsVersion.(string)
+		}
+		versionMap, okVM := version.(map[string]any)
+		if okVM {
+			instance, okI := versionMap["instance"]
+			if okI {
+				instVersion, _ = instance.(string)
+			}
+		}
+		versionMap["instance"] = instVersion
 	}
 }
 
